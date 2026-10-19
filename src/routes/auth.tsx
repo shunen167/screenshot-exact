@@ -9,8 +9,8 @@ import { SiteHeader } from "@/components/SiteHeader";
 type Mode = "signin" | "signup";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>): { mode?: Mode } => ({
-    mode: s.mode === "signup" ? "signup" : undefined,
+  validateSearch: (s: Record<string, unknown>): { mode?: Mode | undefined } => ({
+    mode: s["mode"] === "signup" ? "signup" : undefined,
   }),
   head: () => ({
     meta: [
