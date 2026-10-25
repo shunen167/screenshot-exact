@@ -1,5 +1,5 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState, type FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState, type FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,27 +8,10 @@ import { SiteHeader } from "@/components/SiteHeader";
 
 type Mode = "signin" | "signup";
 
-export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>): { mode?: Mode | undefined } => ({
-    mode: s["mode"] === "signup" ? "signup" : undefined,
-  }),
-  head: () => ({
-    meta: [
-      { title: "Sign in — Flight Price Notifier" },
-      { name: "description", content: "Sign in or create your Flight Price Notifier account." },
-      { property: "og:title", content: "Sign in — Flight Price Notifier" },
-      { property: "og:description", content: "Sign in or create your Flight Price Notifier account." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-    ],
-  }),
-  component: AuthPage,
-});
-
-function AuthPage() {
-  const search = Route.useSearch();
+export default function AuthPage({ mode: initialMode }: { mode: Mode }) {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<Mode>(search.mode ?? "signin");
+  const [mode, setMode] = useState<Mode>(initialMode);
+  useEffect(() => setMode(initialMode), [initialMode]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -44,13 +27,19 @@ function AuthPage() {
         : await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (error) return setError(error.message);
-    if (data.session) navigate({ to: "/app" });
+    if (data.session) navigate("/app");
     else setError("請到信箱確認帳號 / Check your email to confirm your account.");
   }
 
   const isUp = mode === "signup";
   return (
     <div className="flex min-h-screen flex-col">
+      <title>{isUp ? "Sign up — Flight Price Notifier" : "Sign in — Flight Price Notifier"}</title>
+      <meta name="description" content="Sign in or create your Flight Price Notifier account." />
+      <meta property="og:title" content="Sign in — Flight Price Notifier" />
+      <meta property="og:description" content="Sign in or create your Flight Price Notifier account." />
+      <meta property="og:type" content="website" />
+      <meta name="twitter:card" content="summary" />
       <SiteHeader />
       <main className="relative flex flex-1 items-center justify-center px-4 py-16">
         <div className="pointer-events-none absolute inset-0 bg-gradient-hero" />
