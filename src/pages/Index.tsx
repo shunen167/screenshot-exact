@@ -1,21 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { Radar, BellRing, CircleX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SiteHeader } from "@/components/SiteHeader";
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Flight Price Notifier 機票降價通知" },
-      { name: "description", content: "Set a route and a target price — we email you when the fare drops." },
-      { property: "og:title", content: "Flight Price Notifier 機票降價通知" },
-      { property: "og:description", content: "設定航線與目標價，機票降價就通知你。" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: Index,
-});
 
 const features = [
   { icon: Radar, title: "盯緊熱門航線 (Always-on route watching)", body: "持續監控台北出發的熱門航線（東京、首爾），自動抓最低票價。" },
@@ -23,13 +10,19 @@ const features = [
   { icon: CircleX, title: "隨時取消 (Cancel anytime)", body: "月訂閱制，不想用隨時停，沒有綁約。" },
 ];
 
-function Index() {
+export default function Index() {
   return (
     <div className="flex min-h-screen flex-col">
+      <title>Flight Price Notifier 機票降價通知</title>
+      <meta name="description" content="Set a route and a target price — we email you when the fare drops." />
+      <meta property="og:title" content="Flight Price Notifier 機票降價通知" />
+      <meta property="og:description" content="設定航線與目標價，機票降價就通知你。" />
+      <meta property="og:type" content="website" />
+      <meta name="twitter:card" content="summary_large_image" />
       <SiteHeader
         right={
           <Button asChild variant="hero" size="sm">
-            <Link to="/auth">Sign in / 登入</Link>
+            <Link to="/sign-in">Sign in / 登入</Link>
           </Button>
         }
       />
@@ -48,7 +41,7 @@ function Index() {
             </p>
             <div className="animate-fade-up mt-10 [animation-delay:320ms]">
               <Button asChild variant="hero" size="lg">
-                <Link to="/auth" search={{ mode: "signup" }}>Get started / 開始使用</Link>
+                <Link to="/sign-up">Get started / 開始使用</Link>
               </Button>
             </div>
           </div>
