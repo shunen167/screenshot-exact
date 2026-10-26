@@ -31,3 +31,15 @@ This is a plain Vite + React single-page app (React Router for client-side routi
 - `vercel.json` rewrites every path to `index.html`, so deep links like `/app` work.
 - Routes: `/` (landing), `/sign-in`, `/sign-up`, `/app` (signed-in only).
 - Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in Vercel → Settings → Environment Variables.
+
+## Backend (Supabase)
+
+The app talks to its own Supabase project (`kdrvavliktkrvxhjqhsg`).
+The client in `src/integrations/supabase/client.ts` reads only these two env vars:
+
+| Variable | Value |
+| --- | --- |
+| `VITE_SUPABASE_URL` | `https://kdrvavliktkrvxhjqhsg.supabase.co` |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | the project's `sb_publishable_…` key (browser-safe, RLS-gated; replaces the old anon key) |
+
+Locally they come from `.env`. On Vercel, add both for Production, Preview and Development.
